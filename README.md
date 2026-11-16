@@ -2,6 +2,8 @@
 
 Personal academic homepage at **https://ruiruiq.github.io/**, hosted with GitHub Pages.
 
+The page uses a compact, single-column academic layout with a profile header, research introduction, bibliography-style publications, and education and experience.
+
 ## Edit the website
 
 - `index.html`: biography, selected publications, and experience.
