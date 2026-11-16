@@ -30,6 +30,7 @@ nav a { text-decoration: none; font-size: 13px; color: #4b5852; padding: 12px 0;
 nav a:hover { color: var(--teal); text-decoration: underline; }
 .page-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); column-gap: 100px; padding-top: 75px; }
 .identity-inner { position: sticky; top: 44px; }
+.profile-avatar { display: block; width: 160px; height: 160px; max-width: 100%; object-fit: cover; border-radius: 50%; margin: 0 0 26px; border: 1px solid var(--rule); background: var(--accent-tint); }
 .eyebrow, .section-kicker { font: 10px/1.8 var(--mono); text-transform: uppercase; letter-spacing: .14em; }
 .identity .eyebrow { margin: 0 0 21px; color: var(--muted); }
 h1 { font: 400 78px/.98 var(--serif); letter-spacing: -4px; margin: 0 0 28px; }
@@ -111,6 +112,7 @@ h1 { font: 400 78px/.98 var(--serif); letter-spacing: -4px; margin: 0 0 28px; }
   nav a { font-size: 12px; }
   .page-layout { display: block; padding-top: 40px; }
   .identity-inner { position: static; }
+  .profile-avatar { width: 112px; height: 112px; margin-bottom: 22px; }
   .identity .eyebrow { margin-bottom: 12px; }
   h1 { font-size: 60px; line-height: 1; letter-spacing: -3px; margin-bottom: 16px; }
   h1 br { display: none; }
@@ -150,6 +152,7 @@ h1 { font: 400 78px/.98 var(--serif); letter-spacing: -4px; margin: 0 0 28px; }
   .back-to-top { flex-basis: 100%; margin-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (min-width: 781px) and (max-height: 760px) { .identity-inner { position: static; } }
 @media print {
   body { background: white; font-size: 11pt; }
   .site-shell { width: 100%; }
