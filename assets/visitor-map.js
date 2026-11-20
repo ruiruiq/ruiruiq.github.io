@@ -1,104 +1,47 @@
 (() => {
-  const preferenceKey = 'visitor-map.whos-amung-us.opt-in.v1';
-  const checkbox = document.getElementById('visitor-map-consent');
   const canvas = document.getElementById('visitor-map-canvas');
-  const status = document.getElementById('visitor-map-status');
-  const retry = document.getElementById('visitor-map-retry');
-  let frame;
-  let timeout;
+  const link = canvas.querySelector('a');
+  const dashboardLabel = link.getAttribute('aria-label');
+  const loadLabel = 'Load the visitor map and count this visit with whos.amung.us';
+  link.setAttribute('aria-label', loadLabel);
+  link.title = loadLabel;
+  link.addEventListener('click', loadMap);
 
-  function savedPreference() {
-    try {
-      return localStorage.getItem(preferenceKey) === 'enabled';
-    } catch {
-      return null;
-    }
-  }
+  function loadMap(event) {
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    link.removeEventListener('click', loadMap);
+    link.setAttribute('aria-label', dashboardLabel);
+    link.title = dashboardLabel;
 
-  function clearFrame() {
-    clearTimeout(timeout);
-    frame?.remove();
-    frame = null;
-    canvas.classList.remove('is-live');
-    retry.hidden = true;
-  }
+    const frame = document.createElement('iframe');
+    frame.title = 'Recent visitor locations';
+    frame.setAttribute('sandbox', 'allow-scripts');
+    frame.setAttribute('aria-hidden', 'true');
+    frame.tabIndex = -1;
+    frame.referrerPolicy = 'no-referrer';
 
-  function showError() {
-    clearFrame();
-    status.textContent = 'The live map could not load. Please try again later.';
-    retry.hidden = false;
-  }
-
-  function loadMap() {
-    clearFrame();
-    if (!checkbox.checked) {
-      status.textContent = '';
-      return;
-    }
-
-    status.textContent = 'Loading live map…';
-    const nextFrame = document.createElement('iframe');
-    nextFrame.title = 'Live visitor map showing approximate locations';
-    nextFrame.setAttribute('sandbox', 'allow-scripts allow-top-navigation-by-user-activation');
-    nextFrame.referrerPolicy = 'no-referrer';
-    nextFrame.tabIndex = -1;
-    nextFrame.setAttribute('aria-hidden', 'true');
-    nextFrame.addEventListener('load', () => {
-      if (frame === nextFrame && checkbox.checked) {
-        // The sandbox gives this local frame an opaque origin.
-        nextFrame.contentWindow.postMessage('visitor-map:start', '*');
-      }
-    }, { once: true });
-    nextFrame.addEventListener('error', () => {
-      if (frame === nextFrame) showError();
-    }, { once: true });
-    frame = nextFrame;
-    nextFrame.src = 'assets/visitor-map-frame.html';
-    timeout = setTimeout(() => {
-      if (frame === nextFrame) showError();
-    }, 25000);
-    canvas.appendChild(nextFrame);
-  }
-
-  window.addEventListener('message', event => {
-    if (!frame || event.source !== frame.contentWindow || event.origin !== 'null') return;
-    if (event.data === 'visitor-map:error') {
-      showError();
-    } else if (event.data === 'visitor-map:ready') {
+    function finish(ready) {
       clearTimeout(timeout);
-      frame.removeAttribute('aria-hidden');
-      frame.removeAttribute('tabindex');
-      canvas.classList.add('is-live');
-      status.textContent = 'Live map enabled.';
+      window.removeEventListener('message', onMessage);
+      if (ready) canvas.classList.add('is-live');
+      else frame.remove();
     }
-  });
 
-  function syncPreference() {
-    const saved = savedPreference();
-    if (saved !== null && saved !== checkbox.checked) {
-      checkbox.checked = saved;
-      loadMap();
+    function onMessage(message) {
+      if (message.source !== frame.contentWindow || message.origin !== 'null') return;
+      if (message.data === 'visitor-map:ready') finish(true);
+      else if (message.data === 'visitor-map:error') finish(false);
     }
+
+    window.addEventListener('message', onMessage);
+    const timeout = setTimeout(() => finish(false), 25000);
+    frame.addEventListener('load', () => {
+      // The local frame has an opaque origin because it is sandboxed.
+      frame.contentWindow.postMessage('visitor-map:start', '*');
+    }, { once: true });
+    frame.addEventListener('error', () => finish(false), { once: true });
+    frame.src = 'assets/visitor-map-frame.html';
+    canvas.appendChild(frame);
   }
-
-  checkbox.addEventListener('change', () => {
-    try {
-      if (checkbox.checked) localStorage.setItem(preferenceKey, 'enabled');
-      else localStorage.removeItem(preferenceKey);
-    } catch {
-      // Browsers with storage disabled can still opt in for the current page.
-    }
-    loadMap();
-  });
-  retry.addEventListener('click', loadMap);
-  window.addEventListener('storage', event => {
-    if (event.key === preferenceKey || event.key === null) syncPreference();
-  });
-  window.addEventListener('pageshow', event => {
-    if (event.persisted) syncPreference();
-  });
-
-  checkbox.checked = savedPreference() === true;
-  document.getElementById('visitor-map-control').hidden = false;
-  if (checkbox.checked) loadMap();
 })();

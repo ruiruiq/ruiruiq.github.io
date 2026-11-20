@@ -45,7 +45,7 @@
     });
 
     const deadline = window.setTimeout(() => finish(false), 15000);
-    observer.observe(widget, { childList: true });
+    observer.observe(widget, { childList: true, subtree: true, attributes: true, attributeFilter: ["src"] });
     fitMap();
     window.addEventListener("resize", fitMap);
     window._wau = [["map", siteId, slot, String(width), String(height), "classic", "target-blue"]];
