@@ -10,6 +10,7 @@
   <link rel="canonical" href="https://ruiruiq.github.io/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css">
+  <script defer src="assets/visitor-map.js"></script>
   <meta property="og:type" content="website">
   <meta property="og:title" content="Guorui Xu">
   <meta property="og:description" content="Southeast University · Computer Systems / Machine Learning Systems">
@@ -69,6 +70,26 @@
         <div><dt>2020 – 2023</dt><dd>Dalian University of Technology</dd></div>
         <div><dt>2016 – 2020</dt><dd>Ludong University</dd></div>
       </dl>
+    </section>
+
+    <section id="visitors" aria-labelledby="visitors-heading">
+      <h2 id="visitors-heading">Visitor Map</h2>
+      <div class="visitor-map-layout">
+        <div id="visitor-map-canvas" class="visitor-map-canvas">
+          <img src="assets/visitor-world.svg" width="520" height="260" alt="World map outline">
+        </div>
+        <div class="visitor-map-options">
+          <label id="visitor-map-control" class="visitor-map-control" hidden>
+            <input id="visitor-map-consent" type="checkbox" aria-describedby="visitor-map-notice">
+            Enable visitor map
+          </label>
+          <p id="visitor-map-notice">When enabled, whos.amung.us receives your IP address and browser information and marks your approximate city on the map. This choice applies to future visits in this browser. Uncheck it to stop sharing.</p>
+          <p class="visitor-map-links"><a href="https://whos.amung.us/legal/privacy/" rel="noreferrer">Privacy policy</a> · <a href="https://whos.amung.us/stats/maps/w5mpt36rh37h/" rel="noreferrer">Public map</a></p>
+          <p id="visitor-map-status" role="status"></p>
+          <button id="visitor-map-retry" type="button" hidden>Retry map</button>
+          <noscript><p>Enable JavaScript to participate in the visitor map.</p></noscript>
+        </div>
+      </div>
     </section>
 
     <footer><p>Last updated: November 2026</p></footer>

@@ -12,7 +12,7 @@ The page uses a compact, single-column academic layout with a profile header, re
 - `assets/shushu-cat.jpg`: the Shushu cat (Swag Cat) profile avatar.
 - `papers/`: the final PDF of each featured paper.
 
-The site uses plain HTML and CSS. No package installation or build step is required. GitHub Pages publishes from the root of the `master` branch; `.nojekyll` keeps the site static.
+The site uses static HTML, CSS, and a small JavaScript integration for the visitor map. No package installation or build step is required. GitHub Pages publishes from the root of the `master` branch; `.nojekyll` keeps the site static.
 
 To preview locally, serve this directory with any static web server, such as `python -m http.server 4173`, then open `http://localhost:4173`.
 
@@ -30,3 +30,9 @@ The original Hugo starter files and Git history remain available. The homepage i
 ## Avatar source
 
 The Swag Cat / Staring Cat avatar is an unmodified image from [Know Your Meme's template archive](https://knowyourmeme.com/photos/1741230-staring-cat-gusic), which credits [the original @swgcat Instagram post](https://www.instagram.com/p/Bdnb_Fig3pe/). The circular appearance is applied in CSS.
+
+## Visitor map
+
+The [public visitor map](https://whos.amung.us/stats/maps/w5mpt36rh37h/) is hosted by whos.amung.us. Its free widget displays current and some recent visits using approximate IP-based locations. People on the same network can share a pin. A VPN can place the pin near its exit server. The public widget ID is `w5mpt36rh37h`. [Provider documentation](https://whos.amung.us/help/)
+
+The homepage initially serves a local [Natural Earth land map](https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/) from the [public domain](https://www.naturalearthdata.com/about/terms-of-use/). Enabling the live map loads the provider in a sandboxed frame and remembers the choice in this browser. Turning it off removes the frame and clears the preference. A visitor can also follow the public map link to view the provider's statistics. The repository contains no visitor records. [Provider privacy policy](https://whos.amung.us/legal/privacy/)
